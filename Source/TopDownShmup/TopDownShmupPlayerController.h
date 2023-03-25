@@ -23,11 +23,16 @@ protected:
 	/** Navigate player to the current mouse cursor location. */
 	void MoveToMouseCursor();
 
+	/* Make player look at mouse cursor */
+	void UpdateMouseLook();
+
 	/** Navigate player to the current touch location. */
 	void MoveToTouchLocation(const ETouchIndex::Type FingerIndex, const FVector Location);
 	
 	/** Navigate player to the given world location. */
 	void SetNewMoveDestination(const FVector DestLocation);
+	void MoveForward(float Value);
+	void MoveRight(float Value);
 
 	/** Input handlers for SetDestination action. */
 	void OnSetDestinationPressed();

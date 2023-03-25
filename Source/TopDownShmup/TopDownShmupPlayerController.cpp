@@ -17,8 +17,11 @@ void ATopDownShmupPlayerController::PlayerTick(float DeltaTime)
 	// keep updating the destination every tick while desired
 	if (bMoveToMouseCursor)
 	{
-		MoveToMouseCursor();
+		// MoveToMouseCursor();
 	}
+	
+	// Look at the mouse position
+	UpdateMouseLook();
 }
 
 void ATopDownShmupPlayerController::SetupInputComponent()
@@ -28,6 +31,8 @@ void ATopDownShmupPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction("SetDestination", IE_Pressed, this, &ATopDownShmupPlayerController::OnSetDestinationPressed);
 	InputComponent->BindAction("SetDestination", IE_Released, this, &ATopDownShmupPlayerController::OnSetDestinationReleased);
+	InputComponent->BindAxis("MoveForward", this, &ATopDownShmupPlayerController::MoveForward);
+	InputComponent->BindAxis("MoveRight", this, &ATopDownShmupPlayerController::MoveRight);
 
 	// support touch devices 
 	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &ATopDownShmupPlayerController::MoveToTouchLocation);
@@ -87,3 +92,50 @@ void ATopDownShmupPlayerController::OnSetDestinationReleased()
 	// clear flag to indicate we should stop updating the destination
 	bMoveToMouseCursor = false;
 }
+
+// Movement
+void ATopDownShmupPlayerController::MoveForward(float Value)
+{
+	if (Value != 0.0f)
+	{
+		APawn* const Pawn = GetPawn();
+		if (Pawn)
+		{
+			Pawn->AddMovementInput(FVector(1.0f, 0.0f, 0.0f), Value);
+		}
+	}
+}
+
+void ATopDownShmupPlayerController::MoveRight(float Value)
+{
+	if (Value != 0.0f)
+	{
+		APawn* const Pawn = GetPawn();
+		if (Pawn)
+		{
+			Pawn->AddMovementInput(FVector(0.0f, 1.0f, 0.0f), Value);
+		}
+	}
+}
+
+// Aim
+void ATopDownShmupPlayerController::UpdateMouseLook()
+{
+	APawn* const Pawn = GetPawn();
+	if(Pawn)
+	{
+		FHitResult Hit;
+		GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+
+		if (Hit.bBlockingHit)
+		{
+			// We hit something, look there
+			FVector rotation = (Hit.ImpactPoint - Pawn->GetActorLocation());
+			rotation.Z = 0.0f;
+			rotation.Normalize();
+			FRotator trueRotation = rotation.Rotation();
+			Pawn->SetActorRotation(trueRotation);
+		}
+	}
+}
+
