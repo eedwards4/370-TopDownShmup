@@ -3,12 +3,12 @@
 
 #include "AssaultWeapon.h"
 
-void OnStartFire()
+void AAssaultWeapon::OnStartFire()
 {
-    AWeapon::OnStartFire();
+    Super::OnStartFire();
 }
 
-void OnStopFire()
+void AAssaultWeapon::OnStopFire()
 {
-    AWeapon::OnStopFire();
+    Super::OnStopFire();
 }
