@@ -72,6 +72,13 @@ Content/StarterContent/*
 # Compiled source files for the engine to use
 Intermediate/*
 Plugins/*/Intermediate/*
+Plugins/*/RiderLink/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+#Ignore .DS_Store
+.DS_Store
+*.DS_Store
+.idea
+

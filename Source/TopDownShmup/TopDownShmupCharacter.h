@@ -1,6 +1,7 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 #include "GameFramework/Character.h"
+#include "Weapon.h"
 #include "TopDownShmupCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -24,5 +25,13 @@ public:
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+    
+    void BeginPlay() override;
+    
+    UPROPERTY(EditAnywhere, Category=Weapon)
+    TSubclassOf<AWeapon> WeaponClass;
+    
+private:
+    AWeapon* MyWeapon;
 };
 
